@@ -1,0 +1,11 @@
+# Render blueprint. DATABASE_URL is set in the dashboard (Neon/Supabase/Render Postgres).
+services:
+  - type: web
+    name: transaction-webhooks
+    runtime: docker
+    region: virginia   # same region as the Neon DB (us-east-1); cross-region adds ~1s per insert
+    plan: starter   # free tier spins down when idle, which breaks the 500ms target
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false
