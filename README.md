@@ -73,8 +73,13 @@ completion, validation, recovery of an orphaned row, and a poison row going to `
 A [Dockerfile](Dockerfile) and a Render blueprint ([render.yaml](render.yaml)) are included.
 Any managed Postgres works (Neon, Supabase, Render Postgres); set `DATABASE_URL` on the
 service. Deploy in the same region as the database: from a laptop in another continent
-the insert alone took ~1s, which is over the 500ms budget. Use an always-on instance: a host that sleeps when idle will blow the 500ms
-target on the first request and pauses background processing.
+the insert alone took ~1s, which is over the 500ms budget.
+
+The blueprint uses Render's free plan, which spins down after ~15 minutes without
+traffic. A cold start takes 30-60s, which would miss the 500ms target, and the worker
+is paused while the instance sleeps. To avoid that, an external monitor (UptimeRobot)
+pings `GET /` every 5 minutes. Nothing is lost if it does sleep: rows are in Postgres
+and the worker picks them up on wake. For real traffic, switch `plan` to `starter`.
 
 ## Technical choices
 

@@ -4,7 +4,7 @@ services:
     name: transaction-webhooks
     runtime: docker
     region: virginia   # same region as the Neon DB (us-east-1); cross-region adds ~1s per insert
-    plan: starter   # free tier spins down when idle, which breaks the 500ms target
+    plan: free   # spins down after ~15 min idle; keep it warm with an external ping to / every 5 min
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL
