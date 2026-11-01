@@ -4,7 +4,7 @@ Receives transaction webhooks, ACKs with `202` immediately, and processes each
 transaction in the background (30s simulated delay). Results are stored in
 Postgres. Duplicate `transaction_id`s are processed once.
 
-Public URL: `<fill in after deploy>`
+Public URL: https://transaction-webhook-service-hbjz.onrender.com
 
 ## API
 
